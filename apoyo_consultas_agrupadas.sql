@@ -74,7 +74,8 @@ AND cantidad = (SELECT MAX(cantidad) as cantidad_personas FROM inscritos WHERE f
 --HINT: si hay más de un registro, tomar el primero
 
 8. ¿Cuál es el promedio de personas inscritas por día?
-SELECT AVG(cantidad) AS promedio_dia FROM inscritos;
+SELECT fecha, AVG(cantidad) AS inscrito_prom_diarios FROM inscritos GROUP BY fecha;
+--SELECT AVG(cantidad) AS promedio_dia FROM inscritos (total)
 
 
 9. ¿Qué días se inscribieron más de 50 personas?
@@ -85,6 +86,8 @@ SELECT fecha, cantidad FROM inscritos WHERE cantidad > 50;
 10. ¿Cuál es el promedio diario de personas inscritas a partir del tercer día en adelante,
 considerando únicamente las fechas posteriores o iguales a la indicada?
 
-SELECT AVG(cantidad) AS promedio_inscrito_tercer_dia FROM inscritos WHERE fecha >= (SELECT fecha FROM inscritos ORDER BY fecha ASC LIMIT 1 OFFSET 2);
+SELECT fecha, AVG(cantidad) AS promedio_inscrito_tercer_dia FROM inscritos WHERE fecha >= (SELECT distinct fecha FROM inscritos ORDER BY fecha ASC LIMIT 1 OFFSET 2) GROUP BY  fecha;
 
+/* SELECT fecha, AVG(cantidad) AS promedio_inscrito_tercer_dia FROM inscritos GROUP BY DISTINCT fecha, WHERE fecha >= (SELECT fecha FROM inscritos ORDER BY fecha ASC LIMIT 1 OFFSET 2);
+ */
 
